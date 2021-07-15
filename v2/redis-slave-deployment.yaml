@@ -27,6 +27,3 @@ spec:
         env:
         - name: GET_HOSTS_FROM
           value: dns
-        ports:
-        - name: redis-server
-          containerPort: 6379
