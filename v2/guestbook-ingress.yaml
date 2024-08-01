@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: guestbook
+spec:
+  tls:
+    - hosts:
+        - {Ingress Subdomainの値を記載してください}
+      secretName: {Ingress Secretの値を記載してください}
+  rules:
+    - host: {Ingress Subdomainの値を記載してください}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: guestbook
+                port:
+                  number: 3000
