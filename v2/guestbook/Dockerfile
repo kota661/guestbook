@@ -1,18 +1,24 @@
-FROM golang as builder
-RUN go get github.com/codegangsta/negroni
-RUN go get github.com/gorilla/mux github.com/xyproto/simpleredis
-COPY main.go .
-RUN go build main.go
+FROM golang:1.22 as builder
+WORKDIR /go/src
 
-FROM busybox:ubuntu-14.04
+COPY go.mod go.sum ./
+RUN go mod download
+COPY ./main.go ./
+ARG CGO_ENABLED=0
+ARG GOOS=linux
+ARG GOARCH=amd64
+RUN go build \
+  -o /go/bin/main \
+  -ldflags '-s -w'
 
-COPY --from=builder /go//main /app/guestbook
-
+FROM busybox:1.36
+WORKDIR /app
+ENV APP_VERSION="v2"
+COPY --from=builder /go/bin/main /app/main
 ADD public/index.html /app/public/index.html
 ADD public/script.js /app/public/script.js
 ADD public/style.css /app/public/style.css
 ADD public/jquery.min.js /app/public/jquery.min.js
 
-WORKDIR /app
-CMD ["./guestbook"]
+ENTRYPOINT ["/app/main"]
 EXPOSE 3000

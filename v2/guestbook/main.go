@@ -27,7 +27,7 @@ import (
 
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
-	"github.com/xyproto/simpleredis"
+	"github.com/xyproto/simpleredis/v2"
 )
 
 var (
@@ -170,9 +170,10 @@ func HelloHandler(rw http.ResponseWriter, req *http.Request) {
 	rw.Write([]byte("Hello from guestbook. " +
 		"Your app is up! (Hostname: " +
 		os.Getenv("HOSTNAME") +
+		", Version: " +
+		os.Getenv("APP_VERSION") +
 		")\n"))
 }
-
 func HealthzHandler(rw http.ResponseWriter, req *http.Request) {
 	if time.Now().Sub(startTime).Seconds() > delay {
 		http.Error(rw, "Timeout, Health check error!", http.StatusForbidden)
@@ -257,12 +258,13 @@ func findRedisURL() string {
 	host := os.Getenv("REDIS_MASTER_SERVICE_HOST")
 	port := os.Getenv("REDIS_MASTER_SERVICE_PORT")
 	password := os.Getenv("REDIS_MASTER_SERVICE_PASSWORD")
-	master_port := os.Getenv("REDIS_MASTER_PORT")
-
-	if host != "" && port != "" && password != "" {
-		return password + "@" + host + ":" + port
-	} else if master_port != "" {
-		return "redis-master:6379"
+	if host != "" && port != "" {
+		if password != "" {
+			return password + "@" + host + ":" + port
+		} else {
+			// "redis-master:6379"
+			return host + ":" + port
+		}
 	}
 	return ""
 }

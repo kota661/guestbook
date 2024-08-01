@@ -1,0 +1,15 @@
+services:
+  guestbook-v1:
+    image: kota661/guestbook:v1
+    build:
+      context: v1/guestbook
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+  guestbook-v2:
+    image: kota661/guestbook:v2
+    build:
+      context: v2/guestbook
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"

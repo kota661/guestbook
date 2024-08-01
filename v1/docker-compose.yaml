@@ -1,0 +1,15 @@
+services:
+  guestbook-v1:
+    image: kota661/guestbook:v1
+    build:
+      context: guestbook
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_MASTER_SERVICE_HOST=redis-master
+      - REDIS_MASTER_SERVICE_PORT=6379
+    ports:
+      - "3001:3000"
+  redis-master:
+    image: redis:3.2.9
+    ports:
+      - "6379:6379"

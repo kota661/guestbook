@@ -22,3 +22,13 @@ spec:
         ports:
         - name: http-server
           containerPort: 3000
+        # environment:
+        #   - REDIS_MASTER_SERVICE_HOST=redis-master
+        #   - REDIS_MASTER_SERVICE_PORT=6379
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
