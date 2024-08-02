@@ -17,18 +17,20 @@ spec:
         version: "1.0"
     spec:
       containers:
-      - name: guestbook
-        image: ibmcom/guestbook:v1
-        ports:
-        - name: http-server
-          containerPort: 3000
-        # environment:
-        #   - REDIS_MASTER_SERVICE_HOST=redis-master
-        #   - REDIS_MASTER_SERVICE_PORT=6379
-        resources:
-          requests:
-            cpu: 50m
-            memory: 64Mi
-          limits:
-            cpu: 100m
-            memory: 128Mi
+        - name: guestbook
+          image: kota661/guestbook:v1
+          ports:
+            - name: http-server
+              containerPort: 3000
+          # env:
+          #   - name: REDIS_MASTER_SERVICE_HOST
+          #     value: "redis-master"
+          #   - name: REDIS_MASTER_SERVICE_PORT
+          #     value: "6379"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
